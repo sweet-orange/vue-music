@@ -5,7 +5,7 @@ import router from './router'
 import fastclick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
 import 'common/stylus/index.styl'
-
+import store from './store'
 /* eslint-disable no-unused-vars */
 // import vConsole from 'vconsole'
 
@@ -19,5 +19,6 @@ Vue.use(VueLazyload, {
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })
