@@ -1,7 +1,10 @@
 <template>
   <div class="song-list">
     <ul>
-      <li @click="selectItem(song,index)" class="item" v-for="(song, index) in songs" :key="index">
+      <li @click="selectItem(song, index)" class="item" v-for="(song, index) in songs">
+        <div class="rank" v-show="rank">
+          <span :class="getRankCls(index)" v-text="getRankText(index)"></span>
+        </div>
         <div class="content">
           <h2 class="name">{{song.name}}</h2>
           <p class="desc">{{getDesc(song)}}</p>
@@ -10,30 +13,46 @@
     </ul>
   </div>
 </template>
-<script>
-export default {
-  props: {
-    songs: {
-      type: Array,
-      default: []
-    }
-  },
-  methods: {
-    getDesc(song) {
-      return `${song.singer}.${song.album}`
+
+<script type="text/ecmascript-6">
+  export default {
+    props: {
+      songs: {
+        type: Array,
+        default: []
+      },
+      rank: {
+        type: Boolean,
+        default: false
+      }
     },
-    selectItem(item, index) {
-      this.$emit('select', item, index)
+    methods: {
+      selectItem(item, index) {
+        this.$emit('select', item, index)
+      },
+      getDesc(song) {
+        return `${song.singer}·${song.album}`
+      },
+      getRankCls(index) {
+        if (index <= 2) {
+          return `icon icon${index}`
+        } else {
+          return 'text'
+        }
+      },
+      getRankText(index) {
+        if (index > 2) {
+          return index + 1
+        }
+      }
     }
-  },
-  mounted() {
-    console.log(this.songs)
   }
-}
 </script>
-<style lang="stylus" scoped>
- @import "~common/stylus/variable"
- @import "~common/stylus/mixin"
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable"
+  @import "~common/stylus/mixin"
+
   .song-list
     .item
       display: flex
@@ -72,5 +91,3 @@ export default {
           margin-top: 4px
           color: $color-text-d
 </style>
-
-
